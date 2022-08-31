@@ -78,6 +78,7 @@ function expect() {
   local length="${#1}"
   local i=0
   local timeout="${2:-30}"
+  : "$((timeout *= 2))"
   # We can't use ex: grep as we could end blocking forever, if the string isn't followed by a newline
   while true; do
     # read should never exit with a non-zero exit code,

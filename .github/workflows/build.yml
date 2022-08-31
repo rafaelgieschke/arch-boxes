@@ -1,0 +1,18 @@
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - run: |
+        sudo apt-get update && sudo apt-get install -y xorriso qemu-system-x86
+        ./build-host.sh
+    - uses: actions/upload-artifact@v2
+      with:
+        name: image
+        path: output/*.qcow2
+    - uses: softprops/action-gh-release@v1
+      with:
+        files: output/*.qcow2
+        tag_name: test
+        target_commitish: ${{github.sha}}
