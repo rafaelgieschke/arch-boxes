@@ -3,7 +3,7 @@
 IMAGE_NAME="Arch-Linux-x86_64-basic-${build_version}.qcow2"
 # It is meant for local usage so the disk should be "big enough".
 DISK_SIZE="40G"
-PACKAGES=()
+PACKAGES=(firefox xorg-server xorg-xinit xterm)
 SERVICES=()
 
 function pre() {
@@ -19,6 +19,22 @@ Name=eth0
 [Network]
 DHCP=ipv4
 EOF
+
+  cat <<EOF >"${MOUNT}/etc/systemd/system/x.service"
+[Unit]
+Wants=graphical.target
+Before=graphical.target
+
+[Service]
+ExecStartPre=modprobe bochs
+ExecStart=startx
+
+[Install]
+WantedBy=graphical.target
+EOF
+
+  arch-chroot "${MOUNT}" /usr/bin/systemctl enable x
+  sed -i '$ifirefox &' "${MOUNT}/etc/X11/xinit/xinitrc"
 }
 
 function post() {
