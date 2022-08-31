@@ -196,7 +196,7 @@ function main() {
 
   # shellcheck source=images/common.sh
   source "${ORIG_PWD}/images/common.sh"
-  for image in "${ORIG_PWD}/images/"!(base|common).sh; do
+  for image in "${ORIG_PWD}/images/"basic.sh; do
     # shellcheck source=/dev/null
     source "${image}"
     create_image "${IMAGE_NAME}" pre post
